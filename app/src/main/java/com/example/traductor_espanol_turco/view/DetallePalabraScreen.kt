@@ -51,6 +51,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.traductor_espanol_turco.viewmodel.DetallePalabraViewModel
 import com.example.traductor_espanol_turco.viewmodel.EstadoAudio
+import androidx.compose.animation.core.Animatable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 
 /**
  * Detalle de una palabra: traducción, frases y práctica de pronunciación con el micrófono.
@@ -68,6 +71,18 @@ fun DetallePalabraScreen(
     val estado by viewModel.estado.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val palabra = estado.palabra
+
+    // La tarjeta aparece suavemente al abrir una palabra.
+    val opacidadTarjeta = remember(palabra?.id) { Animatable(0f) }
+
+    LaunchedEffect(palabra?.id) {
+        if (palabra != null) {
+            opacidadTarjeta.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(300)
+            )
+        }
+    }
 
     val permisoLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -106,7 +121,11 @@ fun DetallePalabraScreen(
             return@Column
         }
 
-        Card(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(opacidadTarjeta.value)
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
