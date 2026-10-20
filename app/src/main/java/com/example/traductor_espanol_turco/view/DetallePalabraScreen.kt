@@ -236,4 +236,3 @@ private fun MensajeError(mensaje: String) {
         Text(mensaje, color = MaterialTheme.colorScheme.error)
     }
 }
-}
