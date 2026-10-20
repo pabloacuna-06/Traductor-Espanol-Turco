@@ -79,7 +79,7 @@ fun DetallePalabraScreen(
         if (palabra != null) {
             opacidadTarjeta.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(300)
+                animationSpec = tween(2000)
             )
         }
     }
