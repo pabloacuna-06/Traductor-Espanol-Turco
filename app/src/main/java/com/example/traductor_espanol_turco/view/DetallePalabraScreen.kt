@@ -56,10 +56,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 
 /**
- * Detalle de una palabra: traducción, frases y práctica de pronunciación con el micrófono.
+ * Muestra la traducción, las frases y las opciones para practicar con audio.
  *
- * @param esFavorito estado actual del favorito (lo entrega la parte 2: Perfil/Favoritos).
- * @param onToggleFavorito acción para agregar o quitar de favoritos (la entrega la parte 2).
+ * @param esFavorito indica si la palabra está guardada como favorita.
+ * @param onToggleFavorito permite agregar o quitar la palabra de favoritos.
  */
 @Composable
 fun DetallePalabraScreen(
@@ -140,7 +140,7 @@ fun DetallePalabraScreen(
             }
         }
 
-        // Botón de favoritos (la lógica la provee la parte 2).
+        // Agrega o quita la palabra de favoritos.
         OutlinedButton(
             onClick = { onToggleFavorito(palabra.id) },
             modifier = Modifier.fillMaxWidth()

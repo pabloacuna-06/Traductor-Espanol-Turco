@@ -1,9 +1,8 @@
 package com.example.traductor_espanol_turco.navigation
 
-import android.widget.Toast
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -32,15 +31,7 @@ fun AppNavigation() {
     val estadoPerfil by perfilViewModel.estado.collectAsStateWithLifecycle()
     val favoritosViewModel: FavoritosViewModel = viewModel()
     val estadoFavoritos by favoritosViewModel.estado.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
-    val mostrarPendiente: () -> Unit = {
-        Toast.makeText(
-            context,
-            "Esta sección todavía está en desarrollo.",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
 
     NavHost(
         navController = navController,
