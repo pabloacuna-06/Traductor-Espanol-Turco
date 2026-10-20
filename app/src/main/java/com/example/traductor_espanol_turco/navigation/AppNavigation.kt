@@ -15,6 +15,9 @@ import com.example.traductor_espanol_turco.viewmodel.VocabularioViewModel
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.traductor_espanol_turco.view.DetallePalabraScreen
 
 @Composable
 fun AppNavigation() {
@@ -64,12 +67,23 @@ fun AppNavigation() {
                 nombreCategoria = estado.categoriaSeleccionada?.nombre
                     ?: "Palabras",
                 palabras = estado.palabras,
-                onAbrirPalabra = { _ ->
-                    mostrarPendiente()
+                onAbrirPalabra = { id ->
+                    navController.navigate("detalle/$id")
                 },
                 onVolver = {
                     navController.popBackStack()
                 }
+            )
+        }
+
+        composable(
+            "detalle/{palabraId}",
+            arguments = listOf(navArgument("palabraId") { type = NavType.IntType })
+        ) {
+            DetallePalabraScreen(
+                esFavorito = false,
+                onToggleFavorito = { },
+                onVolver = { navController.popBackStack() }
             )
         }
     }
