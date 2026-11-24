@@ -3,10 +3,10 @@ package com.example.traductor_espanol_turco.model
 object DatosVocabulario {
 
     val categorias = listOf(
-        Categoria(1, "Animales"),
-        Categoria(2, "Juguetes"),
-        Categoria(3, "Colores"),
-        Categoria(4, "Alimentos")
+        Categoria(1, "Animales", "Hayvanlar"),
+        Categoria(2, "Juguetes", "Oyuncaklar"),
+        Categoria(3, "Colores", "Renkler"),
+        Categoria(4, "Alimentos", "Yiyecekler")
     )
 
     val palabras = listOf(
