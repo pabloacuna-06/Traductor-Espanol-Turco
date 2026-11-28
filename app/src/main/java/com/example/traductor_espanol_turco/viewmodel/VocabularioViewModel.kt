@@ -1,6 +1,7 @@
 package com.example.traductor_espanol_turco.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.traductor_espanol_turco.domain.FiltroCategorias
 import com.example.traductor_espanol_turco.model.DatosVocabulario
 import com.example.traductor_espanol_turco.model.Idioma
 import com.example.traductor_espanol_turco.model.VocabularioUiState
@@ -30,9 +31,10 @@ class VocabularioViewModel : ViewModel() {
             it.id == categoriaId
         } ?: return
 
-        val palabrasCategoria = DatosVocabulario.palabras.filter {
-            it.categoriaId == categoriaId
-        }
+        val palabrasCategoria = FiltroCategorias.filtrar(
+            palabras = DatosVocabulario.palabras,
+            categoriaId = categoriaId
+        )
 
         _estado.update {
             it.copy(

@@ -23,7 +23,8 @@ fun CategoriasScreen(
     idioma: Idioma,
     onSeleccionarCategoria: (Int) -> Unit,
     onVerFavoritos: () -> Unit,
-    onVerPerfil: () -> Unit
+    onVerPerfil: () -> Unit,
+    onConocerPaises: () -> Unit
 ) {
     val esEspanol = idioma == Idioma.ESPANOL
 
@@ -66,6 +67,19 @@ fun CategoriasScreen(
                     style = MaterialTheme.typography.titleLarge
                 )
             }
+        }
+
+        OutlinedButton(
+            onClick = onConocerPaises,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = if (esEspanol) {
+                    "Conoce Chile y Turquía"
+                } else {
+                    "Şili ve Türkiye'yi tanı"
+                }
+            )
         }
 
         OutlinedButton(

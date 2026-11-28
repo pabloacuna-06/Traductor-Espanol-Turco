@@ -13,12 +13,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.traductor_espanol_turco.view.CategoriasScreen
+import com.example.traductor_espanol_turco.view.ConocePaisesScreen
 import com.example.traductor_espanol_turco.view.DetallePalabraScreen
 import com.example.traductor_espanol_turco.view.FavoritosScreen
 import com.example.traductor_espanol_turco.view.IdiomaScreen
 import com.example.traductor_espanol_turco.view.PalabrasScreen
 import com.example.traductor_espanol_turco.view.PerfilScreen
 import com.example.traductor_espanol_turco.viewmodel.FavoritosViewModel
+import com.example.traductor_espanol_turco.viewmodel.ConocePaisesViewModel
 import com.example.traductor_espanol_turco.viewmodel.PerfilViewModel
 import com.example.traductor_espanol_turco.viewmodel.VocabularioViewModel
 
@@ -75,7 +77,21 @@ fun AppNavigation() {
                 },
                 onVerPerfil = {
                     navController.navigate("perfil")
+                },
+                onConocerPaises = {
+                    navController.navigate("conoce_paises")
                 }
+            )
+        }
+
+        composable("conoce_paises") {
+            val conocePaisesViewModel: ConocePaisesViewModel = viewModel()
+            val estadoPaises by conocePaisesViewModel.estado.collectAsStateWithLifecycle()
+
+            ConocePaisesScreen(
+                estado = estadoPaises,
+                onReintentar = conocePaisesViewModel::reintentar,
+                onVolver = { navController.popBackStack() }
             )
         }
 

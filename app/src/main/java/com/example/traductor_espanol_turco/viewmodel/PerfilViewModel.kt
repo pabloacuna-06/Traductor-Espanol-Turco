@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traductor_espanol_turco.data.AlmacenLocal
+import com.example.traductor_espanol_turco.domain.ValidadorPerfil
 import com.example.traductor_espanol_turco.model.Perfil
 import com.example.traductor_espanol_turco.model.PerfilUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,33 +57,14 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         val correo = actual.correo.trim()
         val edad = actual.edad.trim()
 
-        val errorNombre = when {
-            nombre.isEmpty() -> "El nombre es obligatorio"
-            nombre.length < 2 -> "El nombre es muy corto"
-            else -> null
-        }
+        val validacion = ValidadorPerfil.validar(nombre, correo, edad)
 
-        val errorCorreo = when {
-            correo.isEmpty() -> "El correo es obligatorio"
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(correo).matches() ->
-                "El correo no es válido"
-            else -> null
-        }
-
-        val edadNumero = edad.toIntOrNull()
-        val errorEdad = when {
-            edad.isEmpty() -> "La edad es obligatoria"
-            edadNumero == null -> "La edad debe ser un número"
-            edadNumero < 5 || edadNumero > 120 -> "La edad debe estar entre 5 y 120"
-            else -> null
-        }
-
-        if (errorNombre != null || errorCorreo != null || errorEdad != null) {
+        if (!validacion.esValido) {
             _estado.update {
                 it.copy(
-                    errorNombre = errorNombre,
-                    errorCorreo = errorCorreo,
-                    errorEdad = errorEdad,
+                    errorNombre = validacion.errorNombre,
+                    errorCorreo = validacion.errorCorreo,
+                    errorEdad = validacion.errorEdad,
                     guardado = false
                 )
             }

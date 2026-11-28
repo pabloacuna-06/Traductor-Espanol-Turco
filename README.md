@@ -6,7 +6,7 @@
 
 Al seleccionar una palabra, se muestra su traducción y una frase en ambos idiomas. También permite grabar y reproducir la voz del usuario para practicar.
 
-El vocabulario está incluido en la aplicación y funciona sin internet, sin utilizar servicios externos de traducción.
+El vocabulario está incluido en la aplicación y funciona sin internet. La sección “Conoce Chile y Turquía” usa el endpoint público `/alpha/{code}` de countries.dev para consultar capitales y banderas.
 
 Proyecto desarrollado para la asignatura Desarrollo de Aplicaciones Móviles de Duoc UC.
 
@@ -27,8 +27,10 @@ Proyecto desarrollado para la asignatura Desarrollo de Aplicaciones Móviles de 
 - Almacenamiento local del perfil y de las palabras favoritas mediante Preferences DataStore.
 - Opción para agregar y eliminar favoritos.
 - Animaciones en las transiciones, el detalle de palabras y otras interacciones.
+- Pantalla “Conoce Chile y Turquía” con consumo de API, indicador de carga, manejo de errores y reintento.
 - Organización mediante MVVM: Model, View y ViewModel.
-- Gestión del estado con StateFlow y lógica de validación en los ViewModel.
+- Gestión del estado con StateFlow, repositorio de datos remotos y lógica de dominio separada.
+- Pruebas unitarias del filtrado por categoría y de las validaciones de perfil.
 - Nombre e ícono propios de la aplicación.
 
 La grabación permite escuchar la voz del usuario. No traduce ni evalúa automáticamente su pronunciación.
@@ -42,6 +44,7 @@ La grabación permite escuchar la voz del usuario. No traduce ni evalúa automá
 - Teléfono o emulador con Android 7.0 (API 24) o superior.
 - Micrófono para probar la grabación.
 - Internet durante la configuración inicial para descargar las dependencias.
+- Internet en el dispositivo para consultar las banderas y capitales.
 
 ### Ejecución
 
@@ -55,7 +58,19 @@ La grabación permite escuchar la voz del usuario. No traduce ni evalúa automá
 8. Seleccionar una categoría y una palabra para consultar su traducción.
 9. Autorizar el permiso del micrófono cuando se quiera utilizar la grabación.
 
-La aplicación abre directamente en las categorías. El formulario se encuentra en “Mi perfil”.
+La aplicación abre en la selección de idioma. Desde las categorías se accede a “Conoce Chile y Turquía” y a “Mi perfil”.
+
+### Pruebas unitarias
+
+En Android Studio, abrir la carpeta `app/src/test`, hacer clic derecho sobre la carpeta y seleccionar **Run Tests**. También se pueden ejecutar desde la terminal:
+
+En macOS o Linux:
+
+    ./gradlew :app:testDebugUnitTest
+
+En Windows:
+
+    gradlew.bat :app:testDebugUnitTest
 
 ### Compilación desde la terminal
 
