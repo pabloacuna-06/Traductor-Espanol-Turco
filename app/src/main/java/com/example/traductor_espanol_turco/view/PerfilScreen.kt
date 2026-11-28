@@ -21,11 +21,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.traductor_espanol_turco.R
+import com.example.traductor_espanol_turco.model.ErrorPerfil
+import com.example.traductor_espanol_turco.model.Idioma
 import com.example.traductor_espanol_turco.model.PerfilUiState
 
 @Composable
 fun PerfilScreen(
     estado: PerfilUiState,
+    idioma: Idioma,
     onCambiarNombre: (String) -> Unit,
     onCambiarCorreo: (String) -> Unit,
     onCambiarEdad: (String) -> Unit,
@@ -33,11 +36,14 @@ fun PerfilScreen(
     onEditar: () -> Unit,
     onVolver: () -> Unit
 ) {
+    val esEspanol = idioma == Idioma.ESPANOL
+
     // Animación: cambia suavemente entre el formulario y el perfil guardado
     Crossfade(targetState = estado.modoEdicion, label = "perfil") { editando ->
         if (editando) {
             FormularioPerfil(
                 estado = estado,
+                esEspanol = esEspanol,
                 onCambiarNombre = onCambiarNombre,
                 onCambiarCorreo = onCambiarCorreo,
                 onCambiarEdad = onCambiarEdad,
@@ -47,6 +53,7 @@ fun PerfilScreen(
         } else {
             ResumenPerfil(
                 estado = estado,
+                esEspanol = esEspanol,
                 onEditar = onEditar,
                 onVolver = onVolver
             )
@@ -57,6 +64,7 @@ fun PerfilScreen(
 @Composable
 private fun FormularioPerfil(
     estado: PerfilUiState,
+    esEspanol: Boolean,
     onCambiarNombre: (String) -> Unit,
     onCambiarCorreo: (String) -> Unit,
     onCambiarEdad: (String) -> Unit,
@@ -69,28 +77,34 @@ private fun FormularioPerfil(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Mi perfil", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = if (esEspanol) "Mi perfil" else "Profilim",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         CampoPerfil(
             valor = estado.nombre,
-            etiqueta = "Nombre",
+            etiqueta = if (esEspanol) "Nombre" else "Ad",
             error = estado.errorNombre,
+            esEspanol = esEspanol,
             tipoTeclado = KeyboardType.Text,
             onCambio = onCambiarNombre
         )
 
         CampoPerfil(
             valor = estado.correo,
-            etiqueta = "Correo",
+            etiqueta = if (esEspanol) "Correo" else "E-posta",
             error = estado.errorCorreo,
+            esEspanol = esEspanol,
             tipoTeclado = KeyboardType.Email,
             onCambio = onCambiarCorreo
         )
 
         CampoPerfil(
             valor = estado.edad,
-            etiqueta = "Edad",
+            etiqueta = if (esEspanol) "Edad" else "Yaş",
             error = estado.errorEdad,
+            esEspanol = esEspanol,
             tipoTeclado = KeyboardType.Number,
             onCambio = onCambiarEdad
         )
@@ -98,7 +112,7 @@ private fun FormularioPerfil(
         // Animación: el mensaje de guardado aparece y desaparece suavemente
         AnimatedVisibility(visible = estado.guardado) {
             Text(
-                text = "Perfil guardado correctamente",
+                text = if (esEspanol) "Perfil guardado correctamente" else "Profil kaydedildi",
                 color = MaterialTheme.colorScheme.primary
             )
         }
@@ -107,14 +121,14 @@ private fun FormularioPerfil(
             onClick = onGuardar,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Guardar perfil")
+            Text(if (esEspanol) "Guardar perfil" else "Profili kaydet")
         }
 
         Button(
             onClick = onVolver,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Volver a categorías")
+            Text(if (esEspanol) "Volver a categorías" else "Kategorilere dön")
         }
     }
 }
@@ -122,6 +136,7 @@ private fun FormularioPerfil(
 @Composable
 private fun ResumenPerfil(
     estado: PerfilUiState,
+    esEspanol: Boolean,
     onEditar: () -> Unit,
     onVolver: () -> Unit
 ) {
@@ -129,10 +144,13 @@ private fun ResumenPerfil(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Mi perfil", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = if (esEspanol) "Mi perfil" else "Profilim",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Text(
-            text = "¡Hola, ${estado.nombre}!",
+            text = if (esEspanol) "¡Hola, ${estado.nombre}!" else "Merhaba, ${estado.nombre}!",
             style = MaterialTheme.typography.titleLarge
         )
 
@@ -141,9 +159,9 @@ private fun ResumenPerfil(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text("Nombre: ${estado.nombre}")
-                Text("Correo: ${estado.correo}")
-                Text("Edad: ${estado.edad} años")
+                Text(if (esEspanol) "Nombre: ${estado.nombre}" else "Ad: ${estado.nombre}")
+                Text(if (esEspanol) "Correo: ${estado.correo}" else "E-posta: ${estado.correo}")
+                Text(if (esEspanol) "Edad: ${estado.edad} años" else "Yaş: ${estado.edad}")
             }
         }
 
@@ -151,14 +169,14 @@ private fun ResumenPerfil(
             onClick = onEditar,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Editar perfil")
+            Text(if (esEspanol) "Editar perfil" else "Profili düzenle")
         }
 
         Button(
             onClick = onVolver,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Volver a categorías")
+            Text(if (esEspanol) "Volver a categorías" else "Kategorilere dön")
         }
     }
 }
@@ -167,24 +185,27 @@ private fun ResumenPerfil(
 private fun CampoPerfil(
     valor: String,
     etiqueta: String,
-    error: String?,
+    error: ErrorPerfil?,
+    esEspanol: Boolean,
     tipoTeclado: KeyboardType,
     onCambio: (String) -> Unit
 ) {
+    val mensajeError = if (esEspanol) error?.espanol else error?.turco
+
     Column {
         OutlinedTextField(
             value = valor,
             onValueChange = onCambio,
             label = { Text(etiqueta) },
             singleLine = true,
-            isError = error != null,
+            isError = mensajeError != null,
             keyboardOptions = KeyboardOptions(keyboardType = tipoTeclado),
             // Ícono de error dentro del campo
             trailingIcon = {
-                if (error != null) {
+                if (mensajeError != null) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_error),
-                        contentDescription = "Error",
+                        contentDescription = if (esEspanol) "Error" else "Hata",
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
@@ -193,9 +214,9 @@ private fun CampoPerfil(
         )
 
         // Animación: el mensaje de error aparece suavemente
-        AnimatedVisibility(visible = error != null) {
+        AnimatedVisibility(visible = mensajeError != null) {
             Text(
-                text = error ?: "",
+                text = mensajeError.orEmpty(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
             )

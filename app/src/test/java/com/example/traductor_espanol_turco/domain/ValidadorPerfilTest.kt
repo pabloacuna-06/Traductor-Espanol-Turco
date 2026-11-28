@@ -1,5 +1,7 @@
 package com.example.traductor_espanol_turco.domain
 
+import com.example.traductor_espanol_turco.model.ErrorPerfil
+
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -27,29 +29,29 @@ class ValidadorPerfilTest {
         val resultado = ValidadorPerfil.validar(" ", " ", " ")
 
         assertFalse(resultado.esValido)
-        assertEquals("El nombre es obligatorio", resultado.errorNombre)
-        assertEquals("El correo es obligatorio", resultado.errorCorreo)
-        assertEquals("La edad es obligatoria", resultado.errorEdad)
+        assertEquals(ErrorPerfil.NOMBRE_OBLIGATORIO, resultado.errorNombre)
+        assertEquals(ErrorPerfil.CORREO_OBLIGATORIO, resultado.errorCorreo)
+        assertEquals(ErrorPerfil.EDAD_OBLIGATORIA, resultado.errorEdad)
     }
 
     @Test
     fun `correo invalido es rechazado`() {
         val resultado = ValidadorPerfil.validar("Ana", "correo-invalido", "20")
 
-        assertEquals("El correo no es válido", resultado.errorCorreo)
+        assertEquals(ErrorPerfil.CORREO_INVALIDO, resultado.errorCorreo)
     }
 
     @Test
     fun `edad no numerica es rechazada`() {
         val resultado = ValidadorPerfil.validar("Ana", "ana@example.com", "veinte")
 
-        assertEquals("La edad debe ser un número", resultado.errorEdad)
+        assertEquals(ErrorPerfil.EDAD_NO_NUMERICA, resultado.errorEdad)
     }
 
     @Test
     fun `edad fuera de rango es rechazada`() {
         val resultado = ValidadorPerfil.validar("Ana", "ana@example.com", "121")
 
-        assertEquals("La edad debe estar entre 5 y 120", resultado.errorEdad)
+        assertEquals(ErrorPerfil.EDAD_FUERA_DE_RANGO, resultado.errorEdad)
     }
 }

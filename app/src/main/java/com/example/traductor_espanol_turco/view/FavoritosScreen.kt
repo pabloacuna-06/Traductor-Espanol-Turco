@@ -19,26 +19,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.traductor_espanol_turco.R
+import com.example.traductor_espanol_turco.model.Idioma
 import com.example.traductor_espanol_turco.model.Palabra
 
 @Composable
 fun FavoritosScreen(
     palabras: List<Palabra>,
+    idioma: Idioma,
     onEliminar: (Int) -> Unit,
     onVolver: () -> Unit
 ) {
+    val esEspanol = idioma == Idioma.ESPANOL
+
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Mis favoritos", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = if (esEspanol) "Mis favoritos" else "Favorilerim",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Button(onClick = onVolver) {
-            Text("Volver a categorías")
+            Text(if (esEspanol) "Volver a categorías" else "Kategorilere dön")
         }
 
         if (palabras.isEmpty()) {
-            Text("Todavía no tienes palabras favoritas.")
+            Text(
+                if (esEspanol) "Todavía no tienes palabras favoritas."
+                else "Henüz favori kelimen yok."
+            )
         }
 
         LazyColumn(
@@ -59,13 +69,20 @@ fun FavoritosScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(palabra.espanol, style = MaterialTheme.typography.titleMedium)
-                            Text(palabra.turco)
+                            Text(
+                                text = if (esEspanol) palabra.espanol else palabra.turco,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(if (esEspanol) palabra.turco else palabra.espanol)
                         }
                         IconButton(onClick = { onEliminar(palabra.id) }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_delete),
-                                contentDescription = "Eliminar de favoritos"
+                                contentDescription = if (esEspanol) {
+                                    "Eliminar de favoritos"
+                                } else {
+                                    "Favorilerden kaldır"
+                                }
                             )
                         }
                     }

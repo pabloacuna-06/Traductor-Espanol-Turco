@@ -90,6 +90,7 @@ fun AppNavigation() {
 
             ConocePaisesScreen(
                 estado = estadoPaises,
+                idioma = estado.idioma,
                 onReintentar = conocePaisesViewModel::reintentar,
                 onVolver = { navController.popBackStack() }
             )
@@ -143,6 +144,7 @@ fun AppNavigation() {
         composable("favoritos") {
             FavoritosScreen(
                 palabras = estadoFavoritos.palabras,
+                idioma = estado.idioma,
                 onEliminar = { palabraId ->
                     favoritosViewModel.eliminarFavorito(palabraId)
                 },
@@ -155,6 +157,7 @@ fun AppNavigation() {
         composable("perfil") {
             PerfilScreen(
                 estado = estadoPerfil,
+                idioma = estado.idioma,
                 onCambiarNombre = perfilViewModel::cambiarNombre,
                 onCambiarCorreo = perfilViewModel::cambiarCorreo,
                 onCambiarEdad = perfilViewModel::cambiarEdad,

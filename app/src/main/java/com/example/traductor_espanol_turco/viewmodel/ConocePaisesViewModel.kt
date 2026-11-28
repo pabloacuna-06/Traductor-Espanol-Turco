@@ -38,9 +38,7 @@ class ConocePaisesViewModel(
             } catch (error: CancellationException) {
                 throw error
             } catch (_: Exception) {
-                _estado.value = ConocePaisesUiState(
-                    error = "No pudimos cargar los datos. Revisa tu conexión e inténtalo nuevamente."
-                )
+                _estado.value = ConocePaisesUiState(hayError = true)
             }
         }
     }
